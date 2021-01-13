@@ -1,6 +1,6 @@
-export class Product {
-    id : number;
-    name : string;
-    price : number;
+export class ProductItem {
+    product_name : string;
     description : string;
+    price : number;
+    
 }

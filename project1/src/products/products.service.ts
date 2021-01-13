@@ -1,25 +1,32 @@
 import { Injectable } from '@nestjs/common';
-import {Product} from '../interfaces/product.interface'
+import { InjectRepository } from '@nestjs/typeorm';
+import { ProductItem } from 'src/interfaces/product.interface';
+import { Connection, Repository } from 'typeorm';
+import {Product} from './product.entity'
 
 @Injectable()
 export class ProductsService {
 
-    private readonly products : Product[] = [];
+   constructor(@InjectRepository(Product) private productRepository : Repository<Product>) {}
 
-    getHello(): string {
-      return 'Hello World22!';
-    }
+   findAll(): Promise<Product[]> {
+     return this.productRepository.find();
+   }
+
+   findOne(id: number): Promise<Product> {
+    return this.productRepository.findOne(id);
+   } 
+
+   async remove(id: number): Promise<void> {
+    await this.productRepository.delete(id);
+   }
+
+  async create(product : ProductItem) : Promise<void> {
+   let item = this.productRepository.create(product);
+    await this.productRepository.save(item);
+  }
+
   
-    create(product : Product) {
-      this.products.push(product);
-    }
-  
-    findAll(): Product[] {
-      return this.products;
-    }
 
-    updateOne(name : string, price : number, description : string) {
 
-    }
-    
 }

@@ -16,7 +16,7 @@ import {
     ListAllEntities
 } from './dto/create-product.dto';
 import {ProductsService} from './products.service'
-import {Product} from '../interfaces/product.interface'
+import {ProductItem} from '../interfaces/product.interface'
 import { Response } from 'express';
 
 @Controller('products')
@@ -28,19 +28,20 @@ export class ProductsController {
     @Render('create.hbs')
     create() {
 
-    var products = this.productsService.findAll();
-    var product = products.slice(0).pop();
-
-    
-    var id = product ?  product.id : 0;
-        let a = {
-            id:id + 1,
-            name: 'abc',
-            price: 1000,
-            description: 'aa'
-        }
-       this.productsService.create(a);
        return  {message : 'inserted'};
+    }
+
+
+    @Post('createOne')
+    createOne(@Body() body, @Res() res){
+        let a = new ProductItem();
+        a.product_name = body.name,
+        a.description = body.description,
+        a.price = body.price
+
+        this.productsService.create(a);
+        res.status(302).redirect('/products/index')
+
     }
 
 
@@ -49,9 +50,9 @@ export class ProductsController {
         let products = this.productsService.findAll();
         let id = query.id;
 
-        products.forEach((element,index) => {
-            if (element.id == id) products.splice(index, 1);
-        });
+        // products.forEach((element,index) => {
+        //     if (element.id == id) products.splice(index, 1);
+        // });
        res.status(302).redirect('/products/index')
     }
 
@@ -62,12 +63,14 @@ export class ProductsController {
         let products = this.productsService.findAll();
         let id = query.id;
         let product = null;
-        products.forEach((element,index) => {
-            if (element.id == id) 
-            product = element;
-        });
+        // products.forEach((element,index) => {
+        //     if (element.id == id) 
+        //     product = element;
+        // });
         return {product :product};
     }
+
+  
 
 
     @Post('updateOne')
@@ -79,19 +82,19 @@ export class ProductsController {
         let price = body.price;
         let description = body.description;
         console.log(id);
-        products.forEach((element,index) => {
+        // products.forEach((element,index) => {
            
-            console.log(element.id);
-            if (element.id == id) {
-                element.name = name;
+        //     console.log(element.id);
+        //     if (element.id == id) {
+        //         element.name = name;
                
-                element.price = price;
-                element.description = description;
-            }
-            else {
-                console.log('faill');
-            };
-        });
+        //         element.price = price;
+        //         element.description = description;
+        //     }
+        //     else {
+        //         console.log('faill');
+        //     };
+        // });
 
         // for (let index = 0; index < products.length; index++) {
         //    if (products[index].id == id){
