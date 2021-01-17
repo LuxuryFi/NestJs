@@ -1,0 +1,19 @@
+{
+    "type": "mysql",
+    "port": 3306,
+    "username": "root",
+    "password": "",
+    "database": "nodejs",
+    "entities": [
+        "dist/**/*.entity.{ts,js}"
+    ] ,
+    "migrations": [
+        "database/migrations/**/*.ts"
+    ],
+    "cli": {
+        "migrationsDir": "src/database/migrations"
+    },
+    "synchronize": false,
+    "autoLoadEntities":true
+   
+  }

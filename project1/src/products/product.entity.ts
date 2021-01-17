@@ -1,4 +1,8 @@
-import { Entity , Column , PrimaryGeneratedColumn} from  'typeorm'
+import { Category } from 'src/category/category.entity';
+import { CategoryProduct } from 'src/categoryproduct/categoryproduct.entity';
+import { Entity , Column , PrimaryGeneratedColumn, ManyToOne, JoinColumn, OneToMany} from  'typeorm'
+import 'reflect-metadata';
+
 
 @Entity()
 export class Product {
@@ -13,4 +17,9 @@ export class Product {
 
     @Column()
     price: number
+
+    @ManyToOne(type => Category)
+    @JoinColumn({name : 'category_id'})
+    category: Category;
+    
 }

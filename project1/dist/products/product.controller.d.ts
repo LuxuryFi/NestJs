@@ -7,11 +7,11 @@ export declare class ProductsController {
     };
     createOne(body: any, res: any): void;
     deleteOne(res: any, query: any): void;
-    update(query: any, body: any): {
+    update(query: any, body: any, param: any): {
         product: any;
     };
     updateOne(res: any, query: any, body: any): void;
-    findAll(): {
-        message: Promise<import("./product.entity").Product[]>;
-    };
+    findAll(): Promise<{
+        message: import("./product.entity").Product[];
+    }>;
 }

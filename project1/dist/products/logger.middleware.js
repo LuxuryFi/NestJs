@@ -10,7 +10,8 @@ exports.LoggerMiddleware = void 0;
 const common_1 = require("@nestjs/common");
 let LoggerMiddleware = class LoggerMiddleware {
     use(req, res, next) {
-        console.log('request happening' + req.ip);
+        console.log('request happening' + req.ip + req.url);
+        common_1.SetMetadata('roles', 'admin');
         next();
     }
 };

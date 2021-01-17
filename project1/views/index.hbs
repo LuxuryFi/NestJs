@@ -26,12 +26,12 @@
             {{#each message}}
             <tr>
                 <td>{{id}}</td>
-                <td>{{name}}</td>
+                <td>{{product_name}}</td>
                 <td>{{price}}</td>
                 <td>{{description}}</td>
                 <td>
-                    <a href="/products/delete?id={{id}}"><i class="fas fa-trash"></i></a>
-                    <a href="/products/update?id={{id}}"><i class="fas fa-pen"></i></a>
+                    <a href="/products/delete/{{id}}"><i class="fas fa-trash"></i></a>
+                    <a href="/products/update/{{id}}"><i class="fas fa-pen"></i></a>
                 </td>
 
             </tr>

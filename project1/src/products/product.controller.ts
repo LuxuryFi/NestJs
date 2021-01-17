@@ -9,7 +9,9 @@ import {
     Delete,
     Render,
     Res,
-    Redirect
+    Redirect,
+    ParseIntPipe,
+    UseGuards
 } from '@nestjs/common';
 import {
     CreateProductDto,
@@ -18,11 +20,15 @@ import {
 import {ProductsService} from './products.service'
 import {ProductItem} from '../interfaces/product.interface'
 import { Response } from 'express';
+import { Roles } from 'src/Authentication/roles.decorator';
+import { RolesGuard } from 'src/Authentication/roles.guard';
+import { Role } from 'src/Authentication/role.enum';
 
 @Controller('products')
+@UseGuards(RolesGuard) 
 export class ProductsController {
     constructor(private readonly productsService: ProductsService) { }
-
+    
 
     @Get('create')
     @Render('create.hbs')
@@ -31,8 +37,9 @@ export class ProductsController {
        return  {message : 'inserted'};
     }
 
-
+    @Roles(Role.Admin)
     @Post('createOne')
+    
     createOne(@Body() body, @Res() res){
         let a = new ProductItem();
         a.product_name = body.name,
@@ -41,11 +48,10 @@ export class ProductsController {
 
         this.productsService.create(a);
         res.status(302).redirect('/products/index')
-
     }
 
 
-    @Get('delete')
+    @Get('delete/:id')
     deleteOne(@Res() res, @Query() query){
         let products = this.productsService.findAll();
         let id = query.id;
@@ -57,23 +63,21 @@ export class ProductsController {
     }
 
 
-    @Get('update')
+    @Get('update/:id')
     @Render('update.hbs')
-    update(@Query()  query, @Body() body){
+    update(@Query()  query, @Body() body, @Param('id', ParseIntPipe) param){
         let products = this.productsService.findAll();
         let id = query.id;
         let product = null;
-        // products.forEach((element,index) => {
-        //     if (element.id == id) 
-        //     product = element;
-        // });
         return {product :product};
     }
 
   
 
-
-    @Post('updateOne')
+   
+   
+    // @Roles('admin')
+    @Post('updateOne')    
     updateOne(@Res()  res, @Query()  query, @Body() body){
         let products = this.productsService.findAll();
         let id = query.id;
@@ -82,35 +86,18 @@ export class ProductsController {
         let price = body.price;
         let description = body.description;
         console.log(id);
-        // products.forEach((element,index) => {
-           
-        //     console.log(element.id);
-        //     if (element.id == id) {
-        //         element.name = name;
-               
-        //         element.price = price;
-        //         element.description = description;
-        //     }
-        //     else {
-        //         console.log('faill');
-        //     };
-        // });
-
-        // for (let index = 0; index < products.length; index++) {
-        //    if (products[index].id == id){
-        //        products[index].name = name;
-        //    }
-            
-        // }
+      
 
        res.status(302).redirect('/products/index')
     }
 
+    // @Roles(Role.User)
     @Get('index')
     @Render('index.hbs')
-    findAll() {
-        let string = '';
-        let products = this.productsService.findAll();
+    async findAll() { 
+        let products = await this.productsService.findAll();
+
+        console.log(products);
        return {message : products};
     }
 

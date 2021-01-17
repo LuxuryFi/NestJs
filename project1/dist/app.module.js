@@ -13,7 +13,8 @@ const app_service_1 = require("./app.service");
 const product_module_1 = require("./products/product.module");
 const logger_middleware_1 = require("./products/logger.middleware");
 const typeorm_1 = require("@nestjs/typeorm");
-const product_entity_1 = require("./products/product.entity");
+const category_module_1 = require("./category/category.module");
+const categoryproduct_module_1 = require("./categoryproduct/categoryproduct.module");
 let AppModule = class AppModule {
     configure(consumer) {
         consumer.apply(logger_middleware_1.LoggerMiddleware).forRoutes('products/:splat*');
@@ -21,16 +22,7 @@ let AppModule = class AppModule {
 };
 AppModule = __decorate([
     common_1.Module({
-        imports: [product_module_1.ProductModule, typeorm_1.TypeOrmModule.forRoot({
-                type: 'mysql',
-                port: 3306,
-                username: 'root',
-                password: '',
-                database: 'nodejs',
-                entities: [product_entity_1.Product],
-                synchronize: true,
-                autoLoadEntities: true
-            })],
+        imports: [product_module_1.ProductModule, typeorm_1.TypeOrmModule.forRoot(), category_module_1.CategoryModule, categoryproduct_module_1.CategoryproductModule],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],
     })
